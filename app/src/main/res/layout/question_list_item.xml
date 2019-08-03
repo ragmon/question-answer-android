@@ -30,24 +30,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btn_answer"
-            app:layout_constraintTop_toBottomOf="@+id/question_description"
+            app:layout_constraintTop_toBottomOf="@+id/answer_input"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="Answer"
             app:layout_constraintStart_toEndOf="@+id/btn_rate_down" android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.962"/>
+            android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.962"
+            android:layout_marginTop="3dp"/>
     <ImageButton
             android:layout_width="19dp"
             android:layout_height="19dp" app:srcCompat="@android:drawable/ic_input_add"
             android:id="@+id/btn_rate_up"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/question_description" android:background="@android:color/transparent"/>
+            app:layout_constraintTop_toBottomOf="@+id/answer_input" android:background="@android:color/transparent"/>
     <ImageButton
             android:layout_width="19dp"
             android:layout_height="19dp" app:srcCompat="@android:drawable/ic_delete"
             android:id="@+id/btn_rate_down"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/question_description" android:background="@android:color/transparent"
+            app:layout_constraintTop_toBottomOf="@+id/answer_input" android:background="@android:color/transparent"
             app:layout_constraintStart_toEndOf="@+id/rate_up" android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"/>
     <TextView
@@ -56,14 +57,34 @@
             android:layout_height="wrap_content"
             android:id="@+id/rate_up" app:layout_constraintStart_toEndOf="@+id/btn_rate_up"
             android:layout_marginLeft="8dp" android:layout_marginStart="8dp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/question_description"/>
+            app:layout_constraintTop_toBottomOf="@+id/answer_input"/>
     <TextView
             tools:text="433"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/rate_down" app:layout_constraintStart_toEndOf="@+id/btn_rate_down"
             android:layout_marginLeft="8dp" android:layout_marginStart="8dp" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/question_description"/>
+            app:layout_constraintTop_toBottomOf="@+id/answer_input"/>
+    <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:gravity="start|top"
+            android:ems="10"
+            android:id="@+id/answer_input" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/answer_text_view" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginRight="8dp" android:hint="Answer"
+            app:layout_constraintHorizontal_bias="1.0"/>
+    <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Answer text"
+            android:id="@+id/answer_text_view" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/question_description"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp" android:visibility="gone"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

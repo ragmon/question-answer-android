@@ -28,5 +28,5 @@ interface QuestionService {
     fun questionRateDown(@Path("id") id: Int): Call<Question>
 
     @POST("question/{id}/answer")
-    fun answer(@Path("id") id: Int): Call<Answer>
+    fun answer(@Path("id") id: Int, @Body answer: Answer): Call<Answer>
 }

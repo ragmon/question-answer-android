@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import io.github.ragmon.questionanswer.tools.Retrofit
 import io.github.ragmon.questionanswer.ui.question.QuestionListAdapter
 import io.github.ragmon.questionanswer.ui.question.QuestionViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.question_list_item.view.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -60,16 +62,60 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
     }
 
     override fun onBtnRateUpClick(view: View) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val questionId = view.tag as Int
+
+        mQuestionService.questionRateUp(questionId).enqueue(object : Callback<Question> {
+            override fun onFailure(call: Call<Question>, t: Throwable) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onResponse(call: Call<Question>, response: Response<Question>) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        })
     }
 
     override fun onBtnRateDownClick(view: View) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //
     }
 
     override fun onBtnAnswerClick(view: View) {
         val questionId = view.tag as Int
+        val answerInput = (view.parent as View).answer_input
+        val answerTextView = (view.parent as View).answer_text_view
+        val answerText = answerInput.text.toString()
+        val answer = makeAnswer(questionId, answerText)
 
-        //
+        mQuestionService.answer(questionId, answer).enqueue(object : Callback<Answer> {
+            override fun onFailure(call: Call<Answer>, t: Throwable) {
+                showErrorNotify("Failure sent answer with error: ${t.message}")
+            }
+
+            override fun onResponse(call: Call<Answer>, response: Response<Answer>) {
+                showSuccessNotify("Success sent answer")
+
+                answerInput.visibility = View.GONE
+
+                answerTextView.text = answerText
+                answerTextView.visibility = View.VISIBLE
+            }
+        })
     }
+
+    private fun makeAnswer(questionId: Int, text: String): Answer {
+        val answer = Answer()
+        answer.question_id = questionId
+        answer.text = text
+
+        return answer
+    }
+
+    private fun showSuccessNotify(message: String) {
+        Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun showErrorNotify(message: String) {
+        Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
+    }
+
 }
