@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import io.github.ragmon.questionanswer.model.Question
 import io.github.ragmon.questionanswer.service.QuestionService
@@ -62,21 +63,25 @@ class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFra
         if (question.id == null) {
             mQuestionService.createQuestion(question).enqueue(object : Callback<Question> {
                 override fun onFailure(call: Call<Question>, t: Throwable) {
-                    Log.d(TAG, "Creating question request failure with message: " + t.message)
+                    Log.d(TAG, "Creating question request failure with message: ${t.message}")
 
                     intent.run {
                         putExtra("status", "error")
                         putExtra("error", t.message)
                     }
+
+                    showErrorNotify("Creating question request failure with message: ${t.message}")
                 }
 
                 override fun onResponse(call: Call<Question>, response: Response<Question>) {
-                    Log.d(TAG, "Creating question request success with response with message: " + response.message())
+                    Log.d(TAG, "Creating question request success with response with message: ${response.message()}")
 
                     intent.run {
                         putExtra("status", "success")
                         putExtra("question_id", response.body()?.id)
                     }
+
+                    showSuccessNotify("Creating question request success with response with message: ${response.message()}")
                 }
             })
         }
@@ -84,16 +89,24 @@ class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFra
         else {
             mQuestionService.updateQuestion(question.id!!, question).enqueue(object : Callback<Question> {
                 override fun onFailure(call: Call<Question>, t: Throwable) {
+                    Log.d(TAG, "Updating question request failure with message: ${t.message}")
+
                     intent.run {
                         putExtra("status", "error")
                         putExtra("error", t.message)
                     }
+
+                    showErrorNotify("Updating question request failure with message: ${t.message}")
                 }
 
                 override fun onResponse(call: Call<Question>, response: Response<Question>) {
+                    Log.d(TAG, "Updating question request success with response with message: ${response.message()}")
+
                     intent.run {
                         putExtra("status", "success")
                     }
+
+                    showSuccessNotify("Updating question request success with response with message: ${response.message()}")
                 }
             })
         }
@@ -102,12 +115,12 @@ class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFra
         finish()
     }
 
-    private fun showSuccessNotify() {
-        //
+    private fun showSuccessNotify(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
-    private fun showErrorNotify() {
-        //
+    private fun showErrorNotify(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     companion object {
