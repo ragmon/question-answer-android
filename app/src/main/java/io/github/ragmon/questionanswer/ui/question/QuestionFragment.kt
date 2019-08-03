@@ -6,12 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import io.github.ragmon.questionanswer.R
+import io.github.ragmon.questionanswer.model.Question
 
-class QuestionFragment : Fragment() {
+class QuestionFragment(questionId: Int) : Fragment() {
+
+    private var mQuestionId: Int = questionId
 
     companion object {
-        fun newInstance() = QuestionFragment()
+        fun newInstance(questionId: Int): QuestionFragment {
+            return QuestionFragment(questionId)
+        }
     }
 
     private lateinit var viewModel: QuestionViewModel
@@ -26,7 +32,13 @@ class QuestionFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(QuestionViewModel::class.java)
-        // TODO: Use the ViewModel
+        viewModel.getQuestion(mQuestionId).observe(this, Observer { question ->
+            updateUI(question)
+        })
+    }
+
+    private fun updateUI(question: Question) {
+
     }
 
 }
