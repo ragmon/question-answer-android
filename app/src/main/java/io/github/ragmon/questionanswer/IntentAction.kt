@@ -1,5 +1,8 @@
 package io.github.ragmon.questionanswer
 
-enum class IntentAction {
-    CREATE, READ, UPDATE, DELETE
+enum class IntentAction(val value: String) {
+    CREATE("CREATE"),
+    READ("READ"),
+    UPDATE("UPDATE"),
+    DELETE("DELETE")
 }

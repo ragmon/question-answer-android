@@ -4,11 +4,19 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
+import io.github.ragmon.questionanswer.model.Question
+import io.github.ragmon.questionanswer.service.QuestionService
 import io.github.ragmon.questionanswer.ui.question.QuestionFragment
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.lang.RuntimeException
 
-class QuestionActivity : AppCompatActivity() {
+class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFragmentInteractionListener {
+
+    private lateinit var mQuestionService: QuestionService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,27 +25,107 @@ class QuestionActivity : AppCompatActivity() {
 
             val fragment: Fragment
             when (intent.getStringExtra("action")) {
-                IntentAction.READ.toString() ->
-                    fragment = QuestionFragment.newInstance(intent.getIntExtra("question_id", -1))
+                IntentAction.CREATE.value ->
+                    fragment = CreateUpdateQuestionFragment.newInstance()
+
+                IntentAction.UPDATE.value -> {
+                    val questionId = intent.getIntExtra("question_id", -1)
+                    if (questionId == -1) {
+                        throw RuntimeException("Question ID must be set")
+                    }
+                    fragment = CreateUpdateQuestionFragment.newInstance(questionId)
+                }
+
+                IntentAction.READ.value -> {
+                    val questionId = intent.getIntExtra("question_id", -1)
+                    if (questionId == -1) {
+                        throw RuntimeException("Question ID must be set")
+                    }
+                    fragment = QuestionFragment.newInstance(questionId)
+                }
+
                 else -> throw RuntimeException("Action must be set")
             }
 
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
                 .commitNow()
+
+            mQuestionService = Retrofit.build().create(QuestionService::class.java)
         }
     }
 
-    companion object {
-        fun newIntent(context: Context, action: IntentAction): Intent {
-            return Intent(context, QuestionActivity::class.java)
-                .putExtra("action", action)
+    override fun onQuestionChanged(question: Question) {
+        val intent = Intent()
+
+        // Creating new question
+        if (question.id == null) {
+            mQuestionService.createQuestion(question).enqueue(object : Callback<Question> {
+                override fun onFailure(call: Call<Question>, t: Throwable) {
+                    Log.d(TAG, "Creating question request failure with message: " + t.message)
+
+                    intent.run {
+                        putExtra("status", "error")
+                        putExtra("error", t.message)
+                    }
+                }
+
+                override fun onResponse(call: Call<Question>, response: Response<Question>) {
+                    Log.d(TAG, "Creating question request success with response with message: " + response.message())
+
+                    intent.run {
+                        putExtra("status", "success")
+                        putExtra("question_id", response.body()?.id)
+                    }
+                }
+            })
+        }
+        // Updating exists question
+        else {
+            mQuestionService.updateQuestion(question.id!!, question).enqueue(object : Callback<Question> {
+                override fun onFailure(call: Call<Question>, t: Throwable) {
+                    intent.run {
+                        putExtra("status", "error")
+                        putExtra("error", t.message)
+                    }
+                }
+
+                override fun onResponse(call: Call<Question>, response: Response<Question>) {
+                    intent.run {
+                        putExtra("status", "success")
+                    }
+                }
+            })
         }
 
+        setResult(1, intent)
+        finish()
+    }
+
+    private fun showSuccessNotify() {
+        //
+    }
+
+    private fun showErrorNotify() {
+        //
+    }
+
+    companion object {
+        const val TAG = "QuestionActivity"
+
+        @JvmStatic
+        fun newIntent(context: Context, action: IntentAction): Intent {
+            return Intent(context, QuestionActivity::class.java).apply {
+                putExtra("action", action.value)
+            }
+        }
+
+        @JvmStatic
         fun newIntent(context: Context, action: IntentAction, questionId: Int): Intent {
-            return Intent(context, QuestionActivity::class.java)
-                .putExtra("action", action)
-                .putExtra("question_id", questionId)
+            return Intent(context, QuestionActivity::class.java).apply {
+                putExtra("action", action.value)
+                putExtra("question_id", questionId)
+            }
         }
     }
 

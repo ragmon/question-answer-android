@@ -22,6 +22,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
+        const val TAG = "MainActivity"
+
+        @JvmStatic
         fun newIntent(context: Context): Intent {
             return Intent(context, MainActivity::class.java)
         }

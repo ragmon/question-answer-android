@@ -27,6 +27,7 @@ class QuestionViewModel : ViewModel() {
             question = MutableLiveData()
             loadQuestion(id)
         }
+        return question
     }
 
     private fun loadQuestion(id: Int) {

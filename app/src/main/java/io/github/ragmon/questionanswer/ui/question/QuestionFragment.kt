@@ -38,7 +38,7 @@ class QuestionFragment(questionId: Int) : Fragment() {
     }
 
     private fun updateUI(question: Question) {
-
+        //
     }
 
 }
