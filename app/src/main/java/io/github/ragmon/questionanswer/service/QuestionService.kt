@@ -1,5 +1,6 @@
 package io.github.ragmon.questionanswer.service
 
+import io.github.ragmon.questionanswer.model.Answer
 import io.github.ragmon.questionanswer.model.Question
 import retrofit2.Call
 import retrofit2.http.*
@@ -19,4 +20,13 @@ interface QuestionService {
 
     @DELETE("question/{id}")
     fun deleteQuestion(@Path("id") id: Int): Call<Question>
+
+    @POST("question/{id}/rate_up")
+    fun questionRateUp(@Path("id") id: Int): Call<Question>
+
+    @POST("question/{id}/rate_down")
+    fun questionRateDown(@Path("id") id: Int): Call<Question>
+
+    @POST("question/{id}/answer")
+    fun answer(@Path("id") id: Int): Call<Answer>
 }
