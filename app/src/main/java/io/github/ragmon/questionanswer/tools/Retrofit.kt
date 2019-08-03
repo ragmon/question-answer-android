@@ -1,4 +1,4 @@
-package io.github.ragmon.questionanswer
+package io.github.ragmon.questionanswer.tools
 
 import retrofit2.converter.jackson.JacksonConverterFactory
 
@@ -7,7 +7,7 @@ class Retrofit {
         private lateinit var retrofit: retrofit2.Retrofit
 
         fun build(): retrofit2.Retrofit {
-            if ( ! ::retrofit.isInitialized) {
+            if ( ! Companion::retrofit.isInitialized) {
                 retrofit = retrofit2.Retrofit.Builder()
                     .baseUrl("http://localhost/api/v1/")
                     .addConverterFactory(JacksonConverterFactory.create())

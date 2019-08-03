@@ -18,7 +18,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createNewQuestion() {
-        startActivity(QuestionActivity.newIntent(this, IntentAction.CREATE))
+        startActivityForResult(QuestionActivity.newIntent(this, IntentAction.CREATE), 1)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // TODO: process activity execution result
     }
 
     companion object {

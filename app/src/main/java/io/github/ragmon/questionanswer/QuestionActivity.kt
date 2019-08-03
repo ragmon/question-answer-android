@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import io.github.ragmon.questionanswer.model.Question
 import io.github.ragmon.questionanswer.service.QuestionService
+import io.github.ragmon.questionanswer.tools.Retrofit
 import io.github.ragmon.questionanswer.ui.question.QuestionFragment
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,20 +30,20 @@ class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFra
                 IntentAction.CREATE.value ->
                     fragment = CreateUpdateQuestionFragment.newInstance()
 
-                IntentAction.UPDATE.value -> {
-                    val questionId = intent.getIntExtra("question_id", -1)
-                    if (questionId == -1) {
-                        throw RuntimeException("Question ID must be set")
-                    }
-                    fragment = CreateUpdateQuestionFragment.newInstance(questionId)
-                }
-
                 IntentAction.READ.value -> {
                     val questionId = intent.getIntExtra("question_id", -1)
                     if (questionId == -1) {
                         throw RuntimeException("Question ID must be set")
                     }
                     fragment = QuestionFragment.newInstance(questionId)
+                }
+
+                IntentAction.UPDATE.value -> {
+                    val questionId = intent.getIntExtra("question_id", -1)
+                    if (questionId == -1) {
+                        throw RuntimeException("Question ID must be set")
+                    }
+                    fragment = CreateUpdateQuestionFragment.newInstance(questionId)
                 }
 
                 else -> throw RuntimeException("Action must be set")

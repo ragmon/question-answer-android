@@ -11,4 +11,10 @@ class Question {
 
     @JsonProperty("description")
     var description: String? = null
+
+    @JsonProperty("rate_up")
+    var rateUp: Long = 0
+
+    @JsonProperty("rate_down")
+    var rateDown: Long = 0
 }

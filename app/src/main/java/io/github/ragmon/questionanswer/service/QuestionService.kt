@@ -16,4 +16,7 @@ interface QuestionService {
 
     @PUT("question/{id}")
     fun updateQuestion(@Path("id") id: Int, @Body question: Question): Call<Question>
+
+    @DELETE("question/{id}")
+    fun deleteQuestion(@Path("id") id: Int): Call<Question>
 }
