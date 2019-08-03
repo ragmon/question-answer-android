@@ -63,20 +63,42 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
 
     override fun onBtnRateUpClick(view: View) {
         val questionId = view.tag as Int
+        val rateUpBtn = (view.parent as View).btn_rate_up
+        val rateDownBtn = (view.parent as View).btn_rate_down
+        val rateUpLabel = (view.parent as View).rate_up
 
         mQuestionService.questionRateUp(questionId).enqueue(object : Callback<Question> {
             override fun onFailure(call: Call<Question>, t: Throwable) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                //
             }
 
             override fun onResponse(call: Call<Question>, response: Response<Question>) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                rateUpBtn.setOnClickListener(null)
+                rateDownBtn.setOnClickListener(null)
+
+                rateUpLabel.text = (rateUpLabel.text.toString().toInt() + 1).toString() // +1 rate up
             }
         })
     }
 
     override fun onBtnRateDownClick(view: View) {
-        //
+        val questionId = view.tag as Int
+        val rateUpBtn = (view.parent as View).btn_rate_up
+        val rateDownBtn = (view.parent as View).btn_rate_down
+        val rateDownLabel = (view.parent as View).rate_down
+
+        mQuestionService.questionRateUp(questionId).enqueue(object : Callback<Question> {
+            override fun onFailure(call: Call<Question>, t: Throwable) {
+                //
+            }
+
+            override fun onResponse(call: Call<Question>, response: Response<Question>) {
+                rateUpBtn.setOnClickListener(null)
+                rateDownBtn.setOnClickListener(null)
+
+                rateDownLabel.text = (rateDownLabel.text.toString().toInt() + 1).toString() // +1 rate up
+            }
+        })
     }
 
     override fun onBtnAnswerClick(view: View) {
