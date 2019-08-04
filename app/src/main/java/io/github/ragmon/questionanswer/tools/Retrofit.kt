@@ -24,7 +24,7 @@ class Retrofit {
                 val client = buildHttpClient(interceptor)
 
                 retrofit = retrofit2.Retrofit.Builder()
-                    .baseUrl("http://localhost/api/v1/")
+                    .baseUrl("http://10.0.2.2:3000/api/v1/")
                     .client(client)
                     .addConverterFactory(JacksonConverterFactory.create())
                     .build()

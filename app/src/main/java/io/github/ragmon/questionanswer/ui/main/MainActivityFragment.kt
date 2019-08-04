@@ -53,6 +53,8 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
     }
 
     private fun updateUI(questions: List<Question>) {
+        Log.d(TAG, "updateUI")
+
         viewManager = LinearLayoutManager(this.context)
         viewAdapter = QuestionListAdapter(questions, this)
 

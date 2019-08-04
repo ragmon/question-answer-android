@@ -17,4 +17,7 @@ class Question {
 
     @JsonProperty("rate_down")
     var rateDown: Long = 0
+
+    @JsonProperty("created_at")
+    lateinit var created_at: String
 }
