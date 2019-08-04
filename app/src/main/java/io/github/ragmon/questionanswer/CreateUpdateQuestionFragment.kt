@@ -50,7 +50,7 @@ class CreateUpdateQuestionFragment : Fragment() {
 
     private fun makeQuestion(id: Int? = null, title: String, description: String = ""): Question {
         val question = Question()
-//        question.id = id
+        question.id = id
         question.title = title
         question.description = description
         return question
