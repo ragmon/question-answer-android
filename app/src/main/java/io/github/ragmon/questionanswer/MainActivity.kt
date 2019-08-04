@@ -18,17 +18,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createNewQuestion() {
-        startActivityForResult(QuestionActivity.newIntent(this, IntentAction.CREATE), 1)
+        startActivityForResult(QuestionActivity.newIntent(this, IntentAction.CREATE), REQUEST_CODE_CREATE_QUESTION)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        // TODO: process activity execution result
+        when (requestCode) {
+            REQUEST_CODE_CREATE_QUESTION -> {
+                // TODO: if success add question to list
+            }
+            else -> {
+                throw RuntimeException("Unknown request code #$requestCode")
+            }
+        }
     }
 
     companion object {
         const val TAG = "MainActivity"
+
+        const val REQUEST_CODE_CREATE_QUESTION = 1
 
         @JvmStatic
         fun newIntent(context: Context): Intent {
