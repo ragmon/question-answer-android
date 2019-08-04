@@ -2,6 +2,7 @@ package io.github.ragmon.questionanswer.ui.main
 
 import androidx.fragment.app.Fragment
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,10 +70,12 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
 
         mQuestionService.questionRateUp(questionId).enqueue(object : Callback<Question> {
             override fun onFailure(call: Call<Question>, t: Throwable) {
-                //
+                Log.e(TAG, "Failure to rate up question #$questionId with error: ${t.message}")
             }
 
             override fun onResponse(call: Call<Question>, response: Response<Question>) {
+                Log.d(TAG, "Success to rate up question #$questionId")
+
                 rateUpBtn.setOnClickListener(null)
                 rateDownBtn.setOnClickListener(null)
 
@@ -89,10 +92,12 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
 
         mQuestionService.questionRateUp(questionId).enqueue(object : Callback<Question> {
             override fun onFailure(call: Call<Question>, t: Throwable) {
-                //
+                Log.e(TAG, "Failure to rate down question #$questionId with error: ${t.message}")
             }
 
             override fun onResponse(call: Call<Question>, response: Response<Question>) {
+                Log.d(TAG, "Success to rate down question #$questionId")
+
                 rateUpBtn.setOnClickListener(null)
                 rateDownBtn.setOnClickListener(null)
 
@@ -138,6 +143,10 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
 
     private fun showErrorNotify(message: String) {
         Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
+    }
+
+    companion object {
+        const val TAG = "MainActivityFragment"
     }
 
 }

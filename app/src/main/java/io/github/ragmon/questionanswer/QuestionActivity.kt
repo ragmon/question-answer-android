@@ -66,23 +66,15 @@ class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFra
                 override fun onFailure(call: Call<Question>, t: Throwable) {
                     Log.d(TAG, "Creating question request failure with message: ${t.message}")
 
-                    intent.run {
-                        putExtra("status", "error")
-                        putExtra("error", t.message)
-                    }
-
                     showErrorNotify("Creating question request failure with message: ${t.message}")
                 }
 
                 override fun onResponse(call: Call<Question>, response: Response<Question>) {
                     Log.d(TAG, "Creating question request success with response with message: ${response.message()}")
 
-                    intent.run {
-                        putExtra("status", "success")
-                        putExtra("question_id", response.body()?.id)
-                    }
+                    intent.putExtra("question_id", response.body()?.id)
 
-                    showSuccessNotify("Creating question request success with response with message: ${response.message()}")
+                    setResultAndFinish(RESULT_CODE_SUCCESS, intent)
                 }
             })
         }
@@ -92,40 +84,38 @@ class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFra
                 override fun onFailure(call: Call<Question>, t: Throwable) {
                     Log.d(TAG, "Updating question request failure with message: ${t.message}")
 
-                    intent.run {
-                        putExtra("status", "error")
-                        putExtra("error", t.message)
-                    }
+                    intent.putExtra("error", t.message)
 
-                    showErrorNotify("Updating question request failure with message: ${t.message}")
+                    setResultAndFinish(RESULT_CODE_ERROR, intent)
                 }
 
                 override fun onResponse(call: Call<Question>, response: Response<Question>) {
                     Log.d(TAG, "Updating question request success with response with message: ${response.message()}")
 
-                    intent.run {
-                        putExtra("status", "success")
-                    }
-
-                    showSuccessNotify("Updating question request success with response with message: ${response.message()}")
+                    setResultAndFinish(RESULT_CODE_SUCCESS)
                 }
             })
         }
-
-        setResult(1, intent)
-        finish()
     }
 
-    private fun showSuccessNotify(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
+//    private fun showSuccessNotify(message: String) {
+//        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+//    }
 
     private fun showErrorNotify(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
+    private fun setResultAndFinish(resultCode: Int, intent: Intent? = null) {
+        setResult(resultCode, intent)
+        finish()
+    }
+
     companion object {
         const val TAG = "QuestionActivity"
+
+        const val RESULT_CODE_SUCCESS = 1
+        const val RESULT_CODE_ERROR = 2
 
         @JvmStatic
         fun newIntent(context: Context, action: IntentAction): Intent {

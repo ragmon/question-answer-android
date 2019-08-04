@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -26,12 +27,20 @@ class MainActivity : AppCompatActivity() {
 
         when (requestCode) {
             REQUEST_CODE_CREATE_QUESTION -> {
-                // TODO: if success add question to list
+                if (resultCode == QuestionActivity.RESULT_CODE_SUCCESS) {
+                    // TODO: add new question to list and show notify
+                }
             }
             else -> {
                 throw RuntimeException("Unknown request code #$requestCode")
             }
         }
+    }
+
+    override fun onAttachFragment(fragment: Fragment?) {
+        super.onAttachFragment(fragment)
+
+        //
     }
 
     companion object {

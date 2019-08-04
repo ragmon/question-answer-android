@@ -14,12 +14,6 @@ class QuestionFragment(questionId: Int) : Fragment() {
 
     private var mQuestionId: Int = questionId
 
-    companion object {
-        fun newInstance(questionId: Int): QuestionFragment {
-            return QuestionFragment(questionId)
-        }
-    }
-
     private lateinit var viewModel: QuestionViewModel
 
     override fun onCreateView(
@@ -39,6 +33,13 @@ class QuestionFragment(questionId: Int) : Fragment() {
 
     private fun updateUI(question: Question) {
         //
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(questionId: Int): QuestionFragment {
+            return QuestionFragment(questionId)
+        }
     }
 
 }
