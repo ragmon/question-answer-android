@@ -7,10 +7,10 @@ class Question {
     var id: Int? = null
 
     @JsonProperty("title")
-    lateinit var title: String
+    var title: String = ""
 
     @JsonProperty("description")
-    var description: String? = null
+    var description: String = ""
 
     @JsonProperty("rate_up")
     var rateUp: Long = 0
@@ -19,5 +19,5 @@ class Question {
     var rateDown: Long = 0
 
     @JsonProperty("created_at")
-    lateinit var created_at: String
+    var created_at: String = ""
 }
