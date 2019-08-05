@@ -31,7 +31,7 @@ class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFra
                     fragment = CreateUpdateQuestionFragment.newInstance()
 
                 IntentAction.READ.value -> {
-                    val questionId = intent.getIntExtra("question_id", -1)
+                    val questionId = intent.getIntExtra("questionId", -1)
                     if (questionId == -1) {
                         throw RuntimeException("Question ID must be set")
                     }
@@ -39,7 +39,7 @@ class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFra
                 }
 
                 IntentAction.UPDATE.value -> {
-                    val questionId = intent.getIntExtra("question_id", -1)
+                    val questionId = intent.getIntExtra("questionId", -1)
                     if (questionId == -1) {
                         throw RuntimeException("Question ID must be set")
                     }
@@ -72,7 +72,7 @@ class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFra
                 override fun onResponse(call: Call<Question>, response: Response<Question>) {
                     Log.d(TAG, "Creating question request success with response with message: ${response.message()}")
 
-                    intent.putExtra("question_id", response.body()?.id)
+                    intent.putExtra("questionId", response.body()?.id)
 
                     showSuccessNotify("Creating question request success")
 
@@ -132,7 +132,7 @@ class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFra
         fun newIntent(context: Context, action: IntentAction, questionId: Int): Intent {
             return Intent(context, QuestionActivity::class.java).apply {
                 putExtra("action", action.value)
-                putExtra("question_id", questionId)
+                putExtra("questionId", questionId)
             }
         }
     }

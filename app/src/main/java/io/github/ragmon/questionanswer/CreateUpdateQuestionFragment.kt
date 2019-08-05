@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.fragment_create_update_question.*
 
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM_QUESTION_ID = "question_id"
+private const val ARG_PARAM_QUESTION_ID = "questionId"
 
 class CreateUpdateQuestionFragment : Fragment() {
 

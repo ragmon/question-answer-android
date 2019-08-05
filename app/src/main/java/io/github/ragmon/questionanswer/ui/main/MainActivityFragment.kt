@@ -32,6 +32,7 @@ import retrofit2.Response
 class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var mQuestionService: QuestionService
+    private lateinit var mQuestionViewModel: QuestionViewModel
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
@@ -54,8 +55,8 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
 
         mQuestionService = Retrofit.build().create(QuestionService::class.java)
 
-        val model = ViewModelProviders.of(this)[QuestionViewModel::class.java]
-        model.getQuestions().observe(this, Observer { questions ->
+        mQuestionViewModel = ViewModelProviders.of(this)[QuestionViewModel::class.java]
+        mQuestionViewModel.getQuestions().observe(this, Observer { questions ->
             updateUI(questions)
         })
     }
@@ -75,8 +76,7 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
     override fun onRefresh() {
         Log.d(TAG, "onRefresh")
 
-        val model = ViewModelProviders.of(this)[QuestionViewModel::class.java]
-        model.updateQuestions()
+        mQuestionViewModel.updateQuestions()
 
         swipere_fresh_list.isRefreshing = false
     }
@@ -160,7 +160,7 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
 
     private fun makeAnswer(questionId: Int, text: String): Answer {
         val answer = Answer()
-        answer.question_id = questionId
+        answer.questionId = questionId
         answer.text = text
 
         return answer

@@ -13,6 +13,7 @@ import android.content.Intent
 import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.common.api.ApiException
+import io.github.ragmon.questionanswer.tools.Retrofit
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -99,6 +100,9 @@ class WelcomeActivity : AppCompatActivity() {
     private fun updateUI(account: GoogleSignInAccount?) {
         if (account != null) {
             sign_in_button.visibility = View.GONE
+
+            // Setup Retrofit user ID (using in auth header "x-user-id")
+            Retrofit.setUserId(account.email!!)
 
             navMainActivity()
         } else {

@@ -7,13 +7,13 @@ class Answer {
     var id: Int? = null
 
     @JsonProperty("question_id")
-    var question_id: Int = 0
+    var questionId: Int = 0
 
     @JsonProperty("text")
     var text: String = ""
 
     @JsonProperty("created_at")
-    var created_at: String = ""
+    var createdAt: String = ""
 
     enum class Type(val value: String) {
         QUESTION("question"),

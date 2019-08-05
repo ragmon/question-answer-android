@@ -18,6 +18,12 @@ class Question {
     @JsonProperty("rate_down")
     var rateDown: Long = 0
 
+    @JsonProperty("was_answered")
+    var wasAnswered: Boolean = false
+
+    @JsonProperty("was_rated")
+    var wasRated: Boolean = false
+
     @JsonProperty("created_at")
-    var created_at: String = ""
+    var createdAt: String = ""
 }
