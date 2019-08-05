@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.github.ragmon.questionanswer.R
 import io.github.ragmon.questionanswer.model.Answer
 import io.github.ragmon.questionanswer.model.Question
@@ -28,14 +29,12 @@ import retrofit2.Response
 /**
  * A placeholder fragment containing a simple view.
  */
-class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener {
+class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var mQuestionService: QuestionService
 
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
-
-    private lateinit var mQuestionViewModel: QuestionViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,13 +43,19 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        swipere_fresh_list.setOnRefreshListener(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         mQuestionService = Retrofit.build().create(QuestionService::class.java)
 
-        mQuestionViewModel = ViewModelProviders.of(this)[QuestionViewModel::class.java]
-        mQuestionViewModel.getQuestions().observe(this, Observer { questions ->
+        val model = ViewModelProviders.of(this)[QuestionViewModel::class.java]
+        model.getQuestions().observe(this, Observer { questions ->
             updateUI(questions)
         })
     }
@@ -65,6 +70,15 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
             layoutManager = viewManager
             adapter = viewAdapter
         }
+    }
+
+    override fun onRefresh() {
+        Log.d(TAG, "onRefresh")
+
+        val model = ViewModelProviders.of(this)[QuestionViewModel::class.java]
+        model.updateQuestions()
+
+        swipere_fresh_list.isRefreshing = false
     }
 
     override fun onBtnRateUpClick(view: View) {

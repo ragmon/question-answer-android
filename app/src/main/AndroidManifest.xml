@@ -17,6 +17,7 @@
                 android:name=".WelcomeActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:label="@string/title_activity_welcome"
+                android:noHistory="true"
                 android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

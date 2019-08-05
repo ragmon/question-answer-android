@@ -38,6 +38,10 @@ class QuestionViewModel : ViewModel() {
         })
     }
 
+    fun updateQuestions() {
+        loadQuestions()
+    }
+
     private lateinit var question: MutableLiveData<Question>
 
     fun getQuestion(id: Int): LiveData<Question> {

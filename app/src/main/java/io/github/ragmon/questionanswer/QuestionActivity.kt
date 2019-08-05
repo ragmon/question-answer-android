@@ -74,7 +74,9 @@ class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFra
 
                     intent.putExtra("question_id", response.body()?.id)
 
-                    setResultAndFinish(RESULT_CODE_SUCCESS, intent)
+                    showSuccessNotify("Creating question request success")
+
+                    setResultAndFinish(RC_SUCCESS, intent)
                 }
             })
         }
@@ -86,21 +88,23 @@ class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFra
 
                     intent.putExtra("error", t.message)
 
-                    setResultAndFinish(RESULT_CODE_ERROR, intent)
+                    setResultAndFinish(RC_ERROR, intent)
                 }
 
                 override fun onResponse(call: Call<Question>, response: Response<Question>) {
                     Log.d(TAG, "Updating question request success with response with message: ${response.message()}")
 
-                    setResultAndFinish(RESULT_CODE_SUCCESS)
+                    showSuccessNotify("Updating question request success")
+
+                    setResultAndFinish(RC_SUCCESS)
                 }
             })
         }
     }
 
-//    private fun showSuccessNotify(message: String) {
-//        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-//    }
+    private fun showSuccessNotify(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
 
     private fun showErrorNotify(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
@@ -114,8 +118,8 @@ class QuestionActivity : AppCompatActivity(), CreateUpdateQuestionFragment.OnFra
     companion object {
         const val TAG = "QuestionActivity"
 
-        const val RESULT_CODE_SUCCESS = 1
-        const val RESULT_CODE_ERROR = 2
+        const val RC_SUCCESS = 1
+        const val RC_ERROR = 2
 
         @JvmStatic
         fun newIntent(context: Context, action: IntentAction): Intent {
