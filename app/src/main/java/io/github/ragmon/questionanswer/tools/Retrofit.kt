@@ -19,6 +19,7 @@ class Retrofit {
         private fun buildHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient =
             OkHttpClient.Builder().addInterceptor(interceptor).build()
 
+        @JvmStatic
         fun build(): retrofit2.Retrofit {
             if ( ! Companion::retrofit.isInitialized) {
                 val interceptor = buildInterceptor()
