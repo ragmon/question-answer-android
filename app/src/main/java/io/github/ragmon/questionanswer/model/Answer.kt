@@ -9,6 +9,9 @@ class Answer {
     @JsonProperty("question_id")
     var questionId: Int = 0
 
+    @JsonProperty("user_id")
+    var userId: String = ""
+
     @JsonProperty("text")
     var text: String = ""
 

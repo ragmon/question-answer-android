@@ -6,6 +6,9 @@ class Question {
     @JsonProperty("id")
     var id: Int? = null
 
+    @JsonProperty("user_id")
+    var userId: String = ""
+
     @JsonProperty("title")
     var title: String = ""
 
