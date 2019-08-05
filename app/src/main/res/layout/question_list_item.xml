@@ -36,7 +36,7 @@
             tools:text="Answer"
             app:layout_constraintStart_toEndOf="@+id/btn_rate_down" android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp" app:layout_constraintHorizontal_bias="0.962"
-            android:layout_marginTop="3dp"/>
+            android:layout_marginTop="3dp" android:text="Answer"/>
     <ImageButton
             android:layout_width="19dp"
             android:layout_height="19dp" app:srcCompat="@android:drawable/arrow_up_float"
