@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.ragmon.questionanswer.R
 import io.github.ragmon.questionanswer.model.Answer
 import io.github.ragmon.questionanswer.model.Question
+import io.github.ragmon.questionanswer.model.Rate
 import io.github.ragmon.questionanswer.service.QuestionService
 import io.github.ragmon.questionanswer.tools.Retrofit
 import io.github.ragmon.questionanswer.ui.question.QuestionListAdapter
@@ -34,6 +35,8 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
     private lateinit var viewAdapter: RecyclerView.Adapter<*>
     private lateinit var viewManager: RecyclerView.LayoutManager
 
+    private lateinit var mQuestionViewModel: QuestionViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,8 +49,8 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
 
         mQuestionService = Retrofit.build().create(QuestionService::class.java)
 
-        val model = ViewModelProviders.of(this)[QuestionViewModel::class.java]
-        model.getQuestions().observe(this, Observer { questions ->
+        mQuestionViewModel = ViewModelProviders.of(this)[QuestionViewModel::class.java]
+        mQuestionViewModel.getQuestions().observe(this, Observer { questions ->
             updateUI(questions)
         })
     }
@@ -65,17 +68,19 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
     }
 
     override fun onBtnRateUpClick(view: View) {
+        Log.d(TAG, "onBtnRateUpClick")
+
         val questionId = view.tag as Int
         val rateUpBtn = (view.parent as View).btn_rate_up
         val rateDownBtn = (view.parent as View).btn_rate_down
         val rateUpLabel = (view.parent as View).rate_up
 
-        mQuestionService.questionRateUp(questionId).enqueue(object : Callback<Question> {
-            override fun onFailure(call: Call<Question>, t: Throwable) {
+        mQuestionService.questionRateUp(questionId).enqueue(object : Callback<Rate> {
+            override fun onFailure(call: Call<Rate>, t: Throwable) {
                 Log.e(TAG, "Failure to rate up question #$questionId with error: ${t.message}")
             }
 
-            override fun onResponse(call: Call<Question>, response: Response<Question>) {
+            override fun onResponse(call: Call<Rate>, response: Response<Rate>) {
                 Log.d(TAG, "Success to rate up question #$questionId")
 
                 rateUpBtn.setOnClickListener(null)
@@ -87,23 +92,25 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
     }
 
     override fun onBtnRateDownClick(view: View) {
+        Log.d(TAG, "onBtnRateDownClick")
+
         val questionId = view.tag as Int
         val rateUpBtn = (view.parent as View).btn_rate_up
         val rateDownBtn = (view.parent as View).btn_rate_down
         val rateDownLabel = (view.parent as View).rate_down
 
-        mQuestionService.questionRateUp(questionId).enqueue(object : Callback<Question> {
-            override fun onFailure(call: Call<Question>, t: Throwable) {
+        mQuestionService.questionRateDown(questionId).enqueue(object : Callback<Rate> {
+            override fun onFailure(call: Call<Rate>, t: Throwable) {
                 Log.e(TAG, "Failure to rate down question #$questionId with error: ${t.message}")
             }
 
-            override fun onResponse(call: Call<Question>, response: Response<Question>) {
+            override fun onResponse(call: Call<Rate>, response: Response<Rate>) {
                 Log.d(TAG, "Success to rate down question #$questionId")
 
                 rateUpBtn.setOnClickListener(null)
                 rateDownBtn.setOnClickListener(null)
 
-                rateDownLabel.text = (rateDownLabel.text.toString().toInt() + 1).toString() // +1 rate up
+                rateDownLabel.text = (rateDownLabel.text.toString().toInt() + 1).toString() // +1 rate down
             }
         })
     }
@@ -114,15 +121,21 @@ class MainActivityFragment : Fragment(), QuestionListAdapter.OnItemClickListener
         val answerTextView = (view.parent as View).answer_text_view
         val answerText = answerInput.text.toString()
         val answer = makeAnswer(questionId, answerText)
+        val btnAnswer = (view.parent as View).btn_answer
 
         mQuestionService.answer(questionId, answer).enqueue(object : Callback<Answer> {
             override fun onFailure(call: Call<Answer>, t: Throwable) {
+                Log.e(TAG, "Failure sent answer with error: ${t.message}")
+
                 showErrorNotify("Failure sent answer with error: ${t.message}")
             }
 
             override fun onResponse(call: Call<Answer>, response: Response<Answer>) {
+                Log.d(TAG, "Success sent answer")
+
                 showSuccessNotify("Success sent answer")
 
+                btnAnswer.visibility = View.GONE
                 answerInput.visibility = View.GONE
 
                 answerTextView.text = answerText

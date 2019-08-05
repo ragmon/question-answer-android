@@ -10,5 +10,13 @@ class Answer {
     var question_id: Int = 0
 
     @JsonProperty("text")
-    lateinit var text: String
+    var text: String = ""
+
+    @JsonProperty("created_at")
+    var created_at: String = ""
+
+    enum class Type(val value: String) {
+        QUESTION("question"),
+        ANSWER("answer")
+    }
 }
