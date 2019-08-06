@@ -34,9 +34,26 @@ class QuestionListAdapter(private val mQuestionList: List<Question>, onItemClick
             btn_rate_down.tag = question.id
             btn_answer.tag = question.id
 
-            btn_rate_up.setOnClickListener(onBtnRateUpClickListener)
-            btn_rate_down.setOnClickListener(onBtnRateDownClickListener)
-            btn_answer.setOnClickListener(onBtnAnswerClickListener)
+            if (question.ownAnswer != null) {
+                answer_text_view.text = question.ownAnswer
+            } else {
+                answer_text_view.visibility = View.GONE
+            }
+
+            if ( ! question.wasRated) {
+                btn_rate_up.setOnClickListener(onBtnRateUpClickListener)
+                btn_rate_down.setOnClickListener(onBtnRateDownClickListener)
+            } else {
+                btn_rate_up.visibility = View.GONE
+                btn_rate_down.visibility = View.GONE
+            }
+
+            if ( ! question.wasAnswered) {
+                btn_answer.setOnClickListener(onBtnAnswerClickListener)
+            } else {
+                btn_answer.visibility = View.GONE
+                answer_input.visibility = View.GONE
+            }
         }
     }
 

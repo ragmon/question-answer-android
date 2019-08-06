@@ -27,6 +27,9 @@ class Question {
     @JsonProperty("was_rated")
     var wasRated: Boolean = false
 
+    @JsonProperty("own_answer")
+    var ownAnswer: String? = null
+
     @JsonProperty("created_at")
     var createdAt: String = ""
 }

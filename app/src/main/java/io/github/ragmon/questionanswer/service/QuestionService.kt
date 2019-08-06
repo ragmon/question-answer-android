@@ -3,7 +3,9 @@ package io.github.ragmon.questionanswer.service
 import io.github.ragmon.questionanswer.model.Answer
 import io.github.ragmon.questionanswer.model.Question
 import io.github.ragmon.questionanswer.model.Rate
+import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.*
 
 interface QuestionService {
@@ -20,7 +22,7 @@ interface QuestionService {
     fun updateQuestion(@Path("id") id: Int, @Body question: Question): Call<Question>
 
     @DELETE("question/{id}")
-    fun deleteQuestion(@Path("id") id: Int): Call<Question>
+    fun deleteQuestion(@Path("id") id: Int): Call<ResponseBody>
 
     @POST("question/{id}/rate_up")
     fun questionRateUp(@Path("id") id: Int): Call<Rate>
